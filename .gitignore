@@ -1,6 +1,4 @@
-# Bỏ qua file cấu hình môi trường
-.env
-# Bỏ qua thư mục chứa các gói Node.js
-node_modules/
-# Bỏ qua file Buoi1.pdf
-Buoi1.pdf
+ghichu.docx
+buoi1.rar
+buoi2Temp.rar
+buoi21/
