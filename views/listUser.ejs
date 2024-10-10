@@ -1,0 +1,32 @@
+<h1>data.title</h1>
+<table>
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>Username</th>
+        <th>Full name</th>
+        <th>Address</th>
+        <th>Setting</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (data.rows && data.rows.length > 0) { %> <!-- Kiểm tra xem rows có dữ liệu không -->
+        <% data.rows.forEach((user, index) => { %> <!-- Lặp qua danh sách người dùng -->
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= user.username %></td>
+            <td><%= user.fullname %></td>
+            <td><%= user.address %></td>
+            <td>
+              <a href="/view/<%= user.id %>" class="icon">👁️</a>
+              <a href="/edit/<%= user.id %>" class="icon">✏️</a>
+              <a href="/delete/<%= user.id %>" class="icon">🗑️</a>
+            </td>
+          </tr>
+        <% }) %> <!-- Kết thúc vòng lặp -->
+      <% } else { %> 
+        <tr><td colspan="5">No users found.</td></tr>
+      <% } %> <!-- Nếu không có dữ liệu -->
+    </tbody>
+  </table>
+  
