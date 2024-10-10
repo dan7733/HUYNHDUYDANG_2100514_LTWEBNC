@@ -1,4 +1,4 @@
-<h1>data.title</h1>
+<h1><%= data.title %></h1>
 <table>
     <thead>
       <tr>
@@ -18,9 +18,14 @@
             <td><%= user.fullname %></td>
             <td><%= user.address %></td>
             <td>
-              <a href="/view/<%= user.id %>" class="icon">👁️</a>
-              <a href="/edit/<%= user.id %>" class="icon">✏️</a>
-              <a href="/delete/<%= user.id %>" class="icon">🗑️</a>
+              <a href="/deltauser/<%= user.id %>" class="icon">👁️</a>
+              <a href="/edituser/<%= user.id %>" class="icon">✏️</a>
+              <!-- Form xóa người dùng -->
+              <form action="/deleteuser" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                <!-- Trường hidden chứa id người dùng -->
+                <input type="hidden" name="id" value="<%= user.id %>" />
+                <button type="submit" class="icon">🗑️</button>
+              </form>
             </td>
           </tr>
         <% }) %> <!-- Kết thúc vòng lặp -->
@@ -28,5 +33,4 @@
         <tr><td colspan="5">No users found.</td></tr>
       <% } %> <!-- Nếu không có dữ liệu -->
     </tbody>
-  </table>
-  
+</table>
