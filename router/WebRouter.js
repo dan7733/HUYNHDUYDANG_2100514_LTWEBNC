@@ -1,28 +1,54 @@
 import express from 'express'
-import { default as date } from '../date'; 
+import { default as date } from '../date';
 import getURL_ES6 from '../getURL_ES6';
 import aboutPage from '../controller/AboutController'
 import getHomePage from '../controller/HomeController'
 import getContact from '../controller/ContactController'
-import { getAllUser } from '../controller/UserController'; 
-import { viewUser } from '../controller/UserController'; 
-import { deleteUser } from '../controller/UserController'; 
-import { editUser } from '../controller/UserController'; 
-import { updateUser } from '../controller/UserController'; 
-import { createUser } from '../controller/UserController'; 
-import { insertUser } from '../controller/UserController'; 
+import { getAllUser } from '../controller/UserController';
+import { viewUser } from '../controller/UserController';
+import { deleteUser } from '../controller/UserController';
+import { editUser } from '../controller/UserController';
+import { updateUser } from '../controller/UserController';
+import { createUser } from '../controller/UserController';
+import { insertUser } from '../controller/UserController';
+import { sessionMiddleware, getLoginPage, loginUser, getLogoutPage, authMiddleware, adminMiddleware, userMiddleware } from '../controller/authMiddlewareController';
 const router = express.Router()
 const initWebRoute = (app) => {
     router.get('/', getHomePage)
     router.get('/about', aboutPage);  // Gọi controller xử lý route
-    router.get('/contact', getContact);  
-    router.get('/getuser', getAllUser); 
-    router.get('/deltauser/:id', viewUser); 
-    router.post('/deleteuser/', deleteUser) 
-    router.get('/edituser/:id', editUser); 
-    router.post('/edituser/', updateUser) 
-    router.get('/createnewuser/', createUser);
-    router.post('/createnewuser/', insertUser) 
+    router.get('/contact', getContact);
+
+
+    router.get('/login', getLoginPage);
+    router.post('/login', loginUser);
+    router.get('/logout', getLogoutPage);
+
+
+
+
+    
+    router.get('/getuser', authMiddleware, getAllUser);
+    router.get('/deltauser/:id', authMiddleware, viewUser);
+
+    router.post('/deleteuser/', authMiddleware, deleteUser)
+    router.get('/edituser/:id', authMiddleware,editUser);
+    router.post('/edituser/', authMiddleware,updateUser)
+    router.get('/createnewuser/', authMiddleware,createUser);
+    router.post('/createnewuser/', authMiddleware,insertUser)
+
+    // // Route để thiết lập session
+    // router.get('/set-session', (req, res) => {
+    //     req.session.user = {
+    //         username: 'nthyen',
+    //         fullname: 'Nguyễn Thị Hồng Yến'
+    //     }
+    //     res.send("Set ok!");
+    // });
+
+    // Route để lấy thông tin từ session
+    router.get('/get-session', (req, res) => {
+        res.send(req.session);
+    });
     router.get('/date', (req, res) => {
         res.status(200).set({ 'Content-Type': 'text/html; charset=utf-8' });
         res.send(`${date()}`);
@@ -32,7 +58,7 @@ const initWebRoute = (app) => {
         res.write(`${getURL_ES6.getPath(req)}<br/>`);
         res.write(`${getURL_ES6.getParamesURL(req)}<br/>`);
     });
-
+    app.use(sessionMiddleware);
     return app.use('/', router)
 }
 export default initWebRoute
