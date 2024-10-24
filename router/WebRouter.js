@@ -15,26 +15,18 @@ import { sessionMiddleware, getLoginPage, loginUser, getLogoutPage, authMiddlewa
 const router = express.Router()
 const initWebRoute = (app) => {
     router.get('/', getHomePage)
-    router.get('/about', aboutPage);  // Gọi controller xử lý route
-    router.get('/contact', getContact);
-
-
-    router.get('/login', getLoginPage);
-    router.post('/login', loginUser);
-    router.get('/logout', getLogoutPage);
-
-
-
-
-    
-    router.get('/getuser', authMiddleware, getAllUser);
-    router.get('/deltauser/:id', authMiddleware, viewUser);
-
-    router.post('/deleteuser/', authMiddleware, deleteUser)
-    router.get('/edituser/:id', authMiddleware,editUser);
-    router.post('/edituser/', authMiddleware,updateUser)
-    router.get('/createnewuser/', authMiddleware,createUser);
-    router.post('/createnewuser/', authMiddleware,insertUser)
+    router.get('/about', aboutPage) // Gọi controller xử lý route
+    router.get('/contact', getContact)
+    router.get('/login', getLoginPage)
+    router.post('/login', loginUser)
+    router.get('/logout', getLogoutPage)
+    router.get('/getuser', authMiddleware, getAllUser)
+    router.get('/deltauser/:id', authMiddleware, userMiddleware, viewUser)
+    router.post('/deleteuser/', authMiddleware, userMiddleware, deleteUser)
+    router.get('/edituser/:id', authMiddleware, userMiddleware, editUser)
+    router.post('/edituser/', authMiddleware, userMiddleware, updateUser)
+    router.get('/createnewuser/', authMiddleware, adminMiddleware, createUser)
+    router.post('/createnewuser/', authMiddleware, adminMiddleware, insertUser)
 
     // // Route để thiết lập session
     // router.get('/set-session', (req, res) => {

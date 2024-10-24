@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv/config'
 import viewEngine from './configs/viewEngine';  
 import initWebRoute from './router/WebRouter';
+import initAPIRoute from './router/apiRouter';
 import path from 'path'
 import RedisStore from "connect-redis";
 import session from "express-session";
@@ -33,6 +34,7 @@ app.use(
   })
 );
 initWebRoute(app)
+initAPIRoute(app)
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })

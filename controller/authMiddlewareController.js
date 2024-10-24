@@ -32,7 +32,8 @@ const loginUser = async (req, res) => {
         // Chỉ lưu username và fullname vào session
         req.session.user = {
             username: user.username,   // Giả sử username có trong user
-            fullname: user.fullname     // Giả sử fullname có trong user
+            fullname: user.fullname,     // Giả sử fullname có trong user
+            role: user.role
         };
 
         res.redirect('/'); // Chuyển hướng về trang chính
@@ -67,12 +68,33 @@ const adminMiddleware = (req, res, next) => {
     next();
 };
 
-const userMiddleware = (req, res, next) => {
-    if (req.session.user.role === 'user') {
-        if (req.session.user.id !== req.params.id) {
-            return res.status(403).send('Access denied'); // Trả về lỗi 403 nếu cố gắng truy cập tài khoản của người khác
+const userMiddleware = async (req, res, next) => {
+    const { id } = req.params; // Lấy id từ params
+    const sessionUser = req.session.user; // Lấy thông tin user từ session
+
+    try {
+        // Lấy thông tin username từ CSDL theo id
+        const user = await userModel.getUserById(id); 
+
+        if (!user) {
+            return res.status(404).send('User not found.'); // Trả về lỗi nếu không tìm thấy user
         }
+
+        // Nếu là admin, cho phép thực hiện mọi thao tác
+        if (sessionUser.role === 'admin') {
+            return next();
+        }
+
+        // Nếu là user, chỉ cho phép thao tác trên tài khoản của chính mình
+        if (sessionUser.role === 'user' && sessionUser.username !== user.username) {
+            return res.status(403).send('Access denied. Bạn chỉ có thể thao tác trên tài khoản của mình.');
+        }
+
+        next(); // Tiếp tục nếu quyền hợp lệ
+    } catch (error) {
+        console.error('Error in access control:', error);
+        res.status(500).send('Internal Server Error');
     }
-    next();
 };
+
 export { sessionMiddleware, getLoginPage, loginUser, getLogoutPage, authMiddleware, adminMiddleware, userMiddleware };
