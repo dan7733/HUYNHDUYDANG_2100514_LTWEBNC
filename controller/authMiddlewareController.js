@@ -69,7 +69,7 @@ const adminMiddleware = (req, res, next) => {
 };
 
 const userMiddleware = async (req, res, next) => {
-    const { id } = req.params; // Lấy id từ params
+    const id = req.params.id || req.body.id;
     const sessionUser = req.session.user; // Lấy thông tin user từ session
 
     try {
