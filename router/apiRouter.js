@@ -3,6 +3,8 @@ import aboutPage from '../controller/AboutController'
 import getHomePage from '../controller/HomeController'
 import getContact from '../controller/ContactController'
 import ApiUserController from '../controller/ApiUserController.js';
+import CategoryController from '../controller/CategoryController.js';
+import ProductController from '../controller/ProductController.js';
 import { sessionMiddleware, getLoginPage, loginUser, getLogoutPage, authMiddleware, adminMiddleware, userMiddleware } from '../controller/authMiddlewareController';
 const router = express.Router();
 
@@ -18,6 +20,12 @@ const initAPIRoute = (app) => {
     router.post('/createnewuser/', authMiddleware, adminMiddleware, ApiUserController.insertUser)
     router.post('/login', ApiUserController.loginUser)
     router.get('/logout', ApiUserController.logoutUser)
+
+    router.get('/category', CategoryController.getAllNhom)
+    router.get('/product', ProductController.getAllSanPham)
+    router.get('/deltaproduct/:id', ProductController.deltaProduct);
+
+
     // Gắn router vào ứng dụng Express
     return app.use('/api/v1', router);
 };
