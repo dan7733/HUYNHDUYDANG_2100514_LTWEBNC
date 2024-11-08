@@ -40,7 +40,8 @@ app.use(
 // cho phéo gọi api ở server
 const corsOptions = {
   origin: ['http://localhost:3001', 'http://localhost:1234'],
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  credentials: true
 };
 app.use(cors(corsOptions));
 

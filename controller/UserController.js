@@ -5,12 +5,12 @@ import bcrypt from 'bcryptjs'
 // Controller để lấy tất cả người dùng
 const getAllUser = async (req, res) => {
   try {
-    let userList = await userModel.getAllUser(); // Gọi model để lấy danh sách người dùng
+    let productList = await userModel.getAllUser(); // Gọi model để lấy danh sách người dùng
     res.render('home', {
       data: {
         title: 'List User',
         page: 'listUser',
-        rows: userList // Truyền dữ liệu vào view
+        rows: productList // Truyền dữ liệu vào view
       }
     });
   } catch (error) {

@@ -13,6 +13,16 @@ const getSanPhamById = async (id) => {
     return rows[0];
 };
 
+const getSanPhamByCategory = async (idnhom) => {
+    const [rows, fields] = await pool.execute(
+        'SELECT nhom.ten AS ten_nhom, sanpham.* FROM `sanpham` JOIN `nhom` ON sanpham.idnhom = nhom.idnhom WHERE sanpham.idnhom = ?',
+        [idnhom]
+    );
+    return rows;
+};
+
+
+
 // Xóa sản phẩm theo ID
 const deleteSanPhamById = async (id) => {
     await pool.execute('DELETE FROM `sanpham` WHERE masp = ?', [id]);
@@ -43,4 +53,4 @@ const isSanPhamExist = async (ten) => {
     return rows.length > 0;
 };
 
-export default { getAllSanPham, getSanPhamById, deleteSanPhamById, updateSanPham, insertSanPham, isSanPhamExist };
+export default { getAllSanPham, getSanPhamById, deleteSanPhamById, updateSanPham, insertSanPham, isSanPhamExist, getSanPhamByCategory };

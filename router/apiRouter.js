@@ -20,12 +20,15 @@ const initAPIRoute = (app) => {
     router.post('/createnewuser/', authMiddleware, adminMiddleware, ApiUserController.insertUser)
     router.post('/login', ApiUserController.loginUser)
     router.get('/logout', ApiUserController.logoutUser)
-
+    
     router.get('/category', CategoryController.getAllNhom)
+    router.get('/productbycategory/:id', CategoryController.getAllNhom)
+
     router.get('/product', ProductController.getAllSanPham)
-    router.get('/deltaproduct/:id', ProductController.deltaProduct);
+    router.get('/deltaproduct/:id', ProductController.deltaSanpham);
 
-
+    router.get('/getproductbycategory/:id', ProductController.getSanPhamBynhom);
+    
     // Gắn router vào ứng dụng Express
     return app.use('/api/v1', router);
 };
