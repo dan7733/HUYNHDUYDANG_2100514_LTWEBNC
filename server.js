@@ -8,7 +8,7 @@ import RedisStore from "connect-redis";
 import session from "express-session";
 import { createClient } from "redis";
 import cors from 'cors';
-
+import cookieParser from 'cookie-parser';
 
 const app = express()
 const port=process.env.PORT
@@ -45,6 +45,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+app.use(cookieParser());
 
 
 initWebRoute(app)

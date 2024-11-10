@@ -5,7 +5,7 @@ import getContact from '../controller/ContactController'
 import ApiUserController from '../controller/ApiUserController.js';
 import CategoryController from '../controller/CategoryController.js';
 import ProductController from '../controller/ProductController.js';
-import { sessionMiddleware, getLoginPage, loginUser, getLogoutPage, authMiddleware, adminMiddleware, userMiddleware } from '../controller/authMiddlewareController';
+import { sessionMiddleware, getLoginPage, loginUser, getLogoutPage, authMiddleware, adminMiddleware, userMiddleware, handleGetAccount, handleLogin, handleLogout, cl_userMiddleware, cl_authMiddleware } from '../controller/authMiddlewareController';
 const router = express.Router();
 
 const initAPIRoute = (app) => {
@@ -18,9 +18,15 @@ const initAPIRoute = (app) => {
     router.post('/deleteuser/', authMiddleware, userMiddleware, ApiUserController.deleteUser)
     router.post('/edituser/', authMiddleware, userMiddleware, ApiUserController.updateUser)
     router.post('/createnewuser/', authMiddleware, adminMiddleware, ApiUserController.insertUser)
-    router.post('/login', ApiUserController.loginUser)
-    router.get('/logout', ApiUserController.logoutUser)
+
+
+
+    router.post('/login', handleLogin)
+    router.get('/logout', handleLogout)
+    router.get('/account', handleGetAccount)
+    router.get('/deltauserbyusername/:username', cl_authMiddleware, cl_userMiddleware, ApiUserController.detailUserbyUsername)
     
+
     router.get('/category', CategoryController.getAllNhom)
     router.get('/productbycategory/:id', CategoryController.getAllNhom)
 
